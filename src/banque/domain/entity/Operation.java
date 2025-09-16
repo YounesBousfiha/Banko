@@ -37,4 +37,10 @@ public abstract class Operation {
 		this.montant = montant;
 	}
 	
+	@Override
+	public String toString() {
+	    return "Operation{id=" + uuid + ", amount=" + montant + ", date=" + date + "}";
+
+	}
+	
 }
