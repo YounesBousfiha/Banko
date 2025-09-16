@@ -48,7 +48,14 @@ public abstract class Compte {
 	public void setOperations(List<Operation> operations) {
 		this.operations = operations;
 	}
-
-
+	
+	@Override
+	public String toString() {
+	    return "Compte{" +
+	            "code='" + code + '\'' +
+	            ", solde=" + solde +
+	            ", operations=" + (operations != null ? operations.size() : 0) +
+	            '}';
+	}
 
 } 
