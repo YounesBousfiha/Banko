@@ -1,6 +1,5 @@
 package banque.presentation.controller;
 
-import java.util.Scanner;
 
 import banque.application.service.CompteService;
 import banque.infrastructure.config.GlobalValue;
@@ -16,7 +15,6 @@ public class CompteController {
 		this.compteService = compteService;
 	}
 	
-	// Create Account Method
 	public void CreateAccount(String code, String type, Double solde) {
 		CompteDTO compte = null;
 		
