@@ -9,16 +9,19 @@ import banque.domain.entity.Operation;
 import banque.domain.repository.OperationRepository;
 
 public class OperationRepositoryMemory implements OperationRepository {
-	private Map<String, Operation> operations = new HashMap<>();
+	private Map<String, Map<String, Operation>> operations = new HashMap<>();
 
 	@Override
-	public void save(Operation operation) {
-		this.operations.put(operation.getUuid(), operation);
+	public void save(Operation operation, String code) {
+		this.operations.
+			computeIfAbsent(code, k -> new HashMap<>())
+			.put(operation.getUuid(), operation);
 	}
 
-	@Override
-	public List<Operation> findAll() {
-		return new ArrayList<>(this.operations.values());
-	}
-
+    @Override
+    public List<Operation> findByCode(String code) {
+        Map<String, Operation> ops = operations.get(code);
+        if (ops == null) return new ArrayList<>();
+        return new ArrayList<>(ops.values());
+    }
 }
