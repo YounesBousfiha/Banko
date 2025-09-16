@@ -25,22 +25,22 @@ public class ConsoleUI {
 			
 			switch(choice) {
 				case 1:
-					creeCompte();
+					creeCompte(); // compte controller
 					break;
 				case 2:
-					effectuerVersement();
+					effectuerVersement(); // operation controller
 					break;
 				case 3:
-					effectuerRetrait();
+					effectuerRetrait(); // operation controller
 					break;
 				case 4:
-					effectuerVirement();
+					effectuerVirement(); // operation controller
 					break;
 				case 5:
-					consulterSolde();
+					consulterSolde(); // compte controller
 					break;
 				case 6:
-					consulerOperations();
+					consulerOperations(); // operation controller
 					break;
 				case 0:
 					System.out.println("Au revoir");
