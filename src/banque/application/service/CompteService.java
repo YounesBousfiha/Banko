@@ -5,6 +5,7 @@ import banque.domain.entity.Compte;
 import banque.domain.entity.CompteEpargne;
 import banque.domain.exception.CompteNotFound;
 import banque.domain.exception.DuplicateAccount;
+import banque.domain.exception.InvalidAccountNaming;
 import banque.domain.exception.InvalidAccountType;
 import banque.domain.repository.CompteRepository;
 import banque.infrastructure.config.GlobalValue;
@@ -18,10 +19,12 @@ public class CompteService {
 		this.compteRepository = compteRepository;
 	}
 		
-	// TODO: Validations
 	public void createAccount(CompteDTO compteDto) {
 		Compte compte = null;
 		try {
+			if(!(compteDto.getCode().startsWith("CPT-"))) {
+				throw new InvalidAccountNaming();
+			}
 			Compte oldCompte = this.compteRepository.findByCode(compteDto.getCode());
 			if(oldCompte != null) {
 				throw new DuplicateAccount();
@@ -33,7 +36,7 @@ public class CompteService {
 			this.compteRepository.save(compte);
 			
 			
-		} catch (DuplicateAccount e) {
+		} catch (DuplicateAccount | InvalidAccountNaming e) {
 			System.err.println(e.getMessage());
 		}
 		
@@ -43,9 +46,7 @@ public class CompteService {
 		Double Interest = 0.0;
 		try {
 			Compte compte = this.compteRepository.findByCode(code);
-			
-			//System.out.print("DEBUG: " + compte);
-			
+						
 			if(compte == null) {
 				throw new CompteNotFound();
 			}
