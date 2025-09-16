@@ -1,4 +1,4 @@
-package infrastructure.config;
+package banque.infrastructure.config;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -19,16 +19,20 @@ public class DatabaseConfig {
 		try {
 			Class.forName("org.postgresql.Driver");
 			this.connection = DriverManager.getConnection(URL, USER, PASSWORD);
-		} catch (ClassNotFoundException e) {
-			throw new SQLException("Postgres Driver not found", e);
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new RuntimeException("Postgres Driver not found", e);
 		}
 	}
 
 	public static DatabaseConfig getInstance() {
-		if(instance == null || instance.getConnection().isClosed()) {
-			instance = new DatabaseConfig();
-		}
-		return instance;
+	    try {
+	        if (instance == null || instance.getConnection().isClosed()) {
+	            instance = new DatabaseConfig();
+	        }
+	    } catch (SQLException e) {
+	        throw new RuntimeException("Database connection error", e);
+	    }
+	    return instance;
 	}
 
 	public Connection getConnection() {
