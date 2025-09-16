@@ -8,6 +8,7 @@ import banque.domain.exception.DuplicateAccount;
 import banque.domain.exception.InvalidAccountNaming;
 import banque.domain.exception.InvalidAccountType;
 import banque.domain.repository.CompteRepository;
+import banque.domain.util.ValidationUtils;
 import banque.infrastructure.config.GlobalValue;
 import banque.presentation.dto.CompteDTO;
 
@@ -22,7 +23,7 @@ public class CompteService {
 	public void createAccount(CompteDTO compteDto) {
 		Compte compte = null;
 		try {
-			if(!(compteDto.getCode().startsWith("CPT-"))) {
+			if(!(ValidationUtils.CheckValidCode(compteDto.getCode()))) { 
 				throw new InvalidAccountNaming();
 			}
 			Compte oldCompte = this.compteRepository.findByCode(compteDto.getCode());
