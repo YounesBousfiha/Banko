@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import banque.application.service.OperationService;
 import banque.domain.entity.Operation;
+import banque.domain.exception.SelfTransferException;
 import banque.presentation.dto.RetraitDTO;
 import banque.presentation.dto.VersementDTO;
 
@@ -30,8 +31,19 @@ public class OperationController {
 	}
 	
 	public void makeViremenet(String senderCode, String receiverCode, Double amount, String source, String destination) {
-		this.makeRetrait(senderCode, amount, destination);
-		this.makeDepot(receiverCode, amount, source);
+		
+		try {
+			if(senderCode == receiverCode) {
+				throw new SelfTransferException();
+			}
+			
+			this.makeRetrait(senderCode, amount, destination);
+			this.makeDepot(receiverCode, amount, source);
+			
+		} catch (SelfTransferException e) {
+			System.err.println(e.getMessage());
+		}
+
 	}
 	
 	public List<Operation> getAllOperations(String code) {
