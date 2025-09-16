@@ -1,15 +1,17 @@
 package banque.domain.entity;
 
+import java.util.List;
+
 public abstract class Compte {
 	
 	private String code;
 	private Double solde;
+	private List<Operation> operations;
 	
 	public Compte( String code, Double solde) {
 		this.setCode(code);
 		this.setSolde(solde);
 	}
-	
 	
 	
 	public abstract void retiter();
@@ -35,6 +37,16 @@ public abstract class Compte {
 
 	public void setSolde(Double solde) {
 		this.solde = solde;
+	}
+
+
+	public List<Operation> getOperations() {
+		return operations;
+	}
+
+
+	public void setOperations(List<Operation> operations) {
+		this.operations = operations;
 	}
 
 
