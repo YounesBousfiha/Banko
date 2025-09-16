@@ -1,7 +1,9 @@
 package banque.presentation;
 
+import java.util.List;
 import java.util.Scanner;
 
+import banque.domain.entity.Operation;
 import banque.presentation.controller.CompteController;
 import banque.presentation.controller.OperationController;
 public class ConsoleUI {
@@ -25,7 +27,7 @@ public class ConsoleUI {
 			
 			switch(choice) {
 				case 1:
-					creeCompte(); // compte controller
+					creeCompte();
 					break;
 				case 2:
 					effectuerVersement(); // operation controller
@@ -37,10 +39,13 @@ public class ConsoleUI {
 					effectuerVirement(); // operation controller
 					break;
 				case 5:
-					consulterSolde(); // compte controller
+					consulterSolde();
 					break;
 				case 6:
 					consulerOperations(); // operation controller
+					break;
+				case 7:
+					CalculerInteret();
 					break;
 				case 0:
 					System.out.println("Au revoir");
@@ -59,59 +64,79 @@ public class ConsoleUI {
         System.out.println("4. Effectuer un virement");
         System.out.println("5. Consulter le solde");
         System.out.println("6. Consulter la liste des opérations");
+        System.out.println("7: Calculate Interest");
         System.out.println("0. Quitter");
         System.out.print("Votre choix : ");
 	}
 	
 	private void creeCompte() {
-		System.out.print("Code du Compte : "); // validation aprés
+		System.out.print("Code du Compte (Should Start with CPT-) : ");
 		String code = scanner.nextLine();
 		System.out.print("Type (courant/epargne) : ");
 		String type = scanner.nextLine();
 		System.out.print("Solde initial : ");
 		double solde = scanner.nextDouble();
-		// Call CompteController to Create the Account
+		this.comptecontroller.CreateAccount(code, type, solde);
 	}
 	
 	private void effectuerVersement() {
 		System.out.print("Code du Compte : ");
 		String code = scanner.nextLine();
 		System.out.print("Montant : ");
-		double motant = scanner.nextDouble();
+		double montant = scanner.nextDouble();
+		System.out.print("Source : ");
+		String source = scanner.nextLine();
 		scanner.nextLine();
-		// Call controller to handle Versement(depot) 
+		this.operationcontroller.makeDepot(code, montant, source);
 	}
 	
 	private void effectuerRetrait() {
 		System.out.print("Code du Compte : ");
 		String code = scanner.nextLine();
 		System.out.print("Montant : ");
-		double motant = scanner.nextDouble();
+		double montant = scanner.nextDouble();
+		System.out.print("Destination : ");
+		String dest = scanner.nextLine();
 		scanner.nextLine();
-		// Call controller to handle retrait
+		this.operationcontroller.makeRetrait(code, montant, dest);
 	}
 	
 	private void effectuerVirement() {
-		System.out.print("Compte source : ");
+		System.out.print("Sender Compte  : ");
 		String codesource = scanner.nextLine();
-		System.out.print("Compte destination : ");
+		System.out.print("Reiceiver Compte : ");
 		String codeDest = scanner.nextLine();
 		System.out.print("Montant : ");
 		double montant = scanner.nextDouble();
 		scanner.nextLine();
-		// Call Virement Controller
+
+		System.out.print("Source : ");
+		String source = scanner.nextLine();
+		System.out.print("Destination : ");
+		String destination = scanner.nextLine();
+		this.operationcontroller.makeViremenet(codesource, codeDest, montant, source, destination);
+	}
+	
+	private void CalculerInteret() {
+		System.out.print("Compte Code : ");
+		String code = scanner.nextLine();
+		Double interest = this.comptecontroller.calcInterest(code);
+		System.out.println("Your Account interest is :  " + interest);
 	}
 	
 	private void consulterSolde() {
 		System.out.print("Code du compte : ");
 		String code = scanner.nextLine();
-		// call comptecontroller.consulter solde & return data in double variable
-		System.out.println("Solde du compte "); // concatinate it with code & solde
+		Double solde = this.comptecontroller.getSolde(code);
+		System.out.println("Solde du compte : " + solde);
 	}
 	
 	private void consulerOperations() {
-		System.out.println("Code du compte : ");
+		System.out.print("Code du compte : ");
 		String code = scanner.nextLine();
-		// Call compteController.consulerOperations with code & return List of Operation 
+		List<Operation> operations = this.operationcontroller.getAllOperations(code);
+		
+		operations.stream()
+        	.forEach(System.out::println);
 	}
 }
