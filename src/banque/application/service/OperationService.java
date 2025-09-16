@@ -4,8 +4,10 @@ import java.util.List;
 
 import banque.application.mapper.OperationMapper;
 import banque.domain.entity.Compte;
+import banque.domain.entity.CompteCourant;
 import banque.domain.entity.Operation;
 import banque.domain.exception.CompteNotFound;
+import banque.domain.exception.DecouvertLimitExceeded;
 import banque.domain.exception.InsufficientFunds;
 import banque.domain.exception.NegativeAmount;
 import banque.domain.repository.CompteRepository;
@@ -59,10 +61,18 @@ public class OperationService {
 				throw new NegativeAmount();
 			}
 			
+			if (compte instanceof CompteCourant) {
+			    CompteCourant cpt = (CompteCourant) compte;
+			    double nouveauSolde = cpt.getSolde() - retrait.getMontant();
+			    if (nouveauSolde < -cpt.getDecouvert()) {
+			        throw new DecouvertLimitExceeded();
+			    }
+			}
+			
 			compte.setSolde(compte.getSolde() - retrait.getMontant());
 			this.compteRepository.save(compte);
 			this.operationRepository.save(retrait, code);
-		} catch (CompteNotFound | InsufficientFunds | NegativeAmount e) {
+		} catch (CompteNotFound | InsufficientFunds | DecouvertLimitExceeded | NegativeAmount e) {
 			System.err.println(e.getMessage());
 		}
 
