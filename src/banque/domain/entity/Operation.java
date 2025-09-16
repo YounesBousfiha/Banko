@@ -13,4 +13,8 @@ public abstract class Operation {
 		this.montant = montant;
 	}
 	
+	public String getUuid() {
+		return this.uuid;
+	}
+	
 }
