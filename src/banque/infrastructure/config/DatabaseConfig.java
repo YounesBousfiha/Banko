@@ -9,16 +9,10 @@ public class DatabaseConfig {
 	private static DatabaseConfig instance;
 	private Connection connection;
 
-
-	private static final String URL = "jdbc:postgresql://localhost:5432/banko";
-	private static final String USER = "younes";
-	private static final String PASSWORD = "test123";
-
-
 	private DatabaseConfig() {
 		try {
 			Class.forName("org.postgresql.Driver");
-			this.connection = DriverManager.getConnection(URL, USER, PASSWORD);
+			this.connection = DriverManager.getConnection(GlobalValue.URL, GlobalValue.USER, GlobalValue.PASSWORD);
 		} catch (ClassNotFoundException | SQLException e) {
 			throw new RuntimeException("Postgres Driver not found", e);
 		}
