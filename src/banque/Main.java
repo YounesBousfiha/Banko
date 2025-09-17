@@ -6,6 +6,7 @@ import banque.application.service.CompteService;
 import banque.application.service.OperationService;
 import banque.domain.repository.CompteRepository;
 import banque.domain.repository.OperationRepository;
+import banque.infrastructure.config.GlobalValue;
 import banque.infrastructure.persistence.CompteRepositoryMemory;
 import banque.infrastructure.persistence.OperationRepositoryMemory;
 import banque.presentation.ConsoleUI;
@@ -16,13 +17,17 @@ import banque.presentation.controller.OperationController;
 public class Main {
 	public static void main(String[] args) {
 		System.out.println("Hello");
-		
-		// Database Connection
-		//Connection db = DatabaseConfig.getInstance().getConnection();
-		
+		CompteRepository compteRepository = null;
+		OperationRepository operationRepository = null;
 		 // Create repository Instance inject database Depencendy
-		CompteRepository compteRepository = new CompteRepositoryMemory();
-		OperationRepository operationRepository = new OperationRepositoryMemory();
+		if(GlobalValue.USE_DATABASE) {
+			//Connection db = DatabaseConfig.getInstance().getConnection();
+			// compteRepository = new CompteRepositoryDB(db);
+			// operationRepository = new OperationRepositoryDB(db);
+		} else {
+			compteRepository = new CompteRepositoryMemory();
+			operationRepository = new OperationRepositoryMemory();	
+		}
 		
 		
 		// Create Service Instance with repository
