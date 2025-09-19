@@ -7,7 +7,7 @@ public class CompteCourant extends Compte {
 	public CompteCourant(String code, Double solde, Double decouvert) {
 		super(code, solde);
 		this.decouvert = decouvert;
-	} 
+	}
 	
 	public Double getDecouvert() {
 		return this.decouvert;

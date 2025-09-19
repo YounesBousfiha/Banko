@@ -2,13 +2,15 @@ package banque.domain.entity;
 
 import java.util.List;
 
+import banque.domain.enums.CompteType;
+
 public abstract class Compte {
 	
 	private String code;
 	private Double solde;
 	private List<Operation> operations;
 	
-	public Compte( String code, Double solde) {
+	public Compte(String code, Double solde) {
 		this.setCode(code);
 		this.setSolde(solde);
 	}
@@ -17,7 +19,7 @@ public abstract class Compte {
 	public abstract void retiter();
 	public abstract Double calculerInteret();
 	public abstract void afficherDetails();
-
+	
 	
 	public String getCode() {
 		return code;
@@ -49,6 +51,7 @@ public abstract class Compte {
 		this.operations = operations;
 	}
 	
+	
 	@Override
 	public String toString() {
 	    return "Compte{" +
@@ -57,5 +60,6 @@ public abstract class Compte {
 	            ", operations=" + (operations != null ? operations.size() : 0) +
 	            '}';
 	}
+
 
 } 
