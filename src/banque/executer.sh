@@ -1,5 +1,5 @@
 #!bin/zsh
 
-javac -d out $(find . -name "*.java")
+javac -cp "lib/postgresql.jar" -d out $(find . -name "*.java")
 
-java -cp out banque.Main
+java -cp "out:lib/postgresql.jar" banque.Main
