@@ -4,8 +4,8 @@ import java.time.LocalDate;
 
 public abstract class Operation {
 	protected String uuid;
-	private LocalDate date;
-	private Double montant;
+	protected LocalDate date;
+	protected Double montant;
 	
 	public Operation(String uuid, LocalDate date, Double montant) {
 		this.uuid = uuid;
